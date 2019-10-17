@@ -1,0 +1,11 @@
+<section class='steps'>
+    <div class='scroll-text scroll-text-intro'>
+        {{#each doc.pocket-steps}}
+        <div class='step' data-step='{{{i}}}' id='step-{{{i}}}'>
+            <div class='step-text-container'>
+            <p class='step-prose'>{{{text}}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+  </section>

@@ -1,0 +1,15 @@
+<section class='setup'>
+    <p class='prose'>{{{doc.setup-html}}}</p>
+    <pre data-src='assets/prism/pocket.html'></pre>
+
+    <p class='prose'>{{{doc.setup-css}}}</p>
+    <pre data-src='assets/prism/pocket.css'></pre>
+
+    <p class='prose'>{{{doc.setup-js}}}</p>
+    <pre data-src='assets/prism/pocket.js'></pre>
+
+    {{#each doc.post-setup}}
+        <p class='prose'>{{{value}}}</p>
+    {{/each}}
+
+</section>
