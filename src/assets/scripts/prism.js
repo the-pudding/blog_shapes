@@ -493,7 +493,7 @@ Token.wrap = function(o, language){
 		we need to wrap it in a special <span> so that lines of code can be separated
 	*/
 		const wrapper = {
-			tag: 'span',
+			tag: 'div',
 			classes: ['wrapper', 'line', `wrapper-${language}`],
 			language: language,
 			attributes: {},
@@ -514,7 +514,8 @@ Token.wrap = function(o, language){
 		if (content.includes('{')) edges = 'start'
 		else if (content.includes('}')) edges = 'end'
 		else edges = 'none'
-		const htmlWrapper = `<${wrapper.tag} data-edge=${edges} data-row=${i} class='${wrapper.classes.join(' ')}' ${attributes ? ' attributes' : ''}>${content}</${wrapper.tag}>`
+		const codeLineNumber = `<div class='lineNumber'>${i + 1}</div>`
+		const htmlWrapper = `<${wrapper.tag} data-edge=${edges} data-row=${i} class='${wrapper.classes.join(' ')}' ${attributes ? ' attributes' : ''}>${codeLineNumber}${content}</${wrapper.tag}>`
 		wrappers.push(htmlWrapper)
 	})
 	return wrappers.join('')
