@@ -475,6 +475,8 @@ _self.Prism = _;
 
 function flattenLine(line, language){
 	console.log({language, line})
+	const flat = line.content ? line.content : line 
+	console.log({flat})
 	if (typeof(line) === 'string') return line
 	else return line.map(d => Token.stringify(d, language)).join('')
 }
@@ -510,10 +512,14 @@ Token.wrap = function(o, language){
 
 	let wrappers = []
 
-	o.forEach(line => {
+	o.forEach((line, i) => {
 		const content = flattenLine(line, language)
-		console.log({line, content})
-		const htmlWrapper = '<' + wrapper.tag + ' class="' + wrapper.classes.join(' ') + '"' + (attributes ? ' ' + attributes : '') + '>' + content + '</' + wrapper.tag + '>';
+		let edges = null 
+		if (content.includes('{')) edges = 'start'
+		else if (content.includes('}')) edges = 'end'
+		else edges = 'none'
+		const htmlWrapper = `<${wrapper.tag} data-edge=${edges} class='${wrapper.classes.join(' ')} wrapper-${i}' ${attributes ? ' attributes' : ''}>${content}</${wrapper.tag}>`
+		//const htmlWrapper = '<' + wrapper.tag + ' class="' + wrapper.classes.join(' ') + '"' + (attributes ? ' ' + attributes : '') + '>' + content + '</' + wrapper.tag + '>';
 		wrappers.push(htmlWrapper)
 	})
 	return wrappers.join('')
@@ -549,6 +555,7 @@ Token.wrap = function(o, language){
 }
 
 Token.stringify = function(o, language) {
+	console.log({o})
 	if (o){
 
 		var env = {
@@ -569,8 +576,9 @@ Token.stringify = function(o, language) {
 				//return Token.wrap(o, language)
 				env.classes.push('wrapper')
 				return o.map(function(element) {
-					console.log({element})
-					return Token.stringify(element.content, language);
+					const cont = element.content ? element.content : element
+					console.log({cont})
+					return Token.stringify(cont, language);
 				}).join('');
 			}
 
