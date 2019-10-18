@@ -291,7 +291,6 @@ var _ = {
 		text.forEach(d => {
 			
 			tokens = _.tokenize(d, env.grammar)
-			console.log({tok: env.tokens})
 			env.tokens.push(tokens)
 		})
 		_.hooks.run('before-tokenize', env);
@@ -474,9 +473,7 @@ var _ = {
 _self.Prism = _;
 
 function flattenLine(line, language){
-	console.log({language, line})
 	const flat = line.content ? line.content : line 
-	console.log({flat})
 	if (typeof(line) === 'string') return line
 	else return line.map(d => Token.stringify(d, language)).join('')
 }
@@ -491,14 +488,13 @@ function Token(type, content, alias, matchedStr, greedy) {
 }
 
 Token.wrap = function(o, language){
-	console.log({o})
 	/*
 		o is an array of elements that make up a single line of code
 		we need to wrap it in a special <span> so that lines of code can be separated
 	*/
 		const wrapper = {
 			tag: 'span',
-			classes: ['wrapper', 'line'],
+			classes: ['wrapper', 'line', `wrapper-${language}`],
 			language: language,
 			attributes: {},
 			//content: flattenLine(o, language)
@@ -518,44 +514,14 @@ Token.wrap = function(o, language){
 		if (content.includes('{')) edges = 'start'
 		else if (content.includes('}')) edges = 'end'
 		else edges = 'none'
-		const htmlWrapper = `<${wrapper.tag} data-edge=${edges} class='${wrapper.classes.join(' ')} wrapper-${i}' ${attributes ? ' attributes' : ''}>${content}</${wrapper.tag}>`
-		//const htmlWrapper = '<' + wrapper.tag + ' class="' + wrapper.classes.join(' ') + '"' + (attributes ? ' ' + attributes : '') + '>' + content + '</' + wrapper.tag + '>';
+		const htmlWrapper = `<${wrapper.tag} data-edge=${edges} data-row=${i} class='${wrapper.classes.join(' ')}' ${attributes ? ' attributes' : ''}>${content}</${wrapper.tag}>`
 		wrappers.push(htmlWrapper)
 	})
 	return wrappers.join('')
-	// for each line
-	// o.forEach(line => {
-	// 	let flattened = null
-	// 	// separate out each element 
-	// 	// line.forEach(element => {
-	// 	// 	const content = element.content 
-	// 	// 	console.log({content})
-
-	// 	// 	// if it's a nested array, unnest it
-	// 	// 	if (Array.isArray(content)){
-	// 	// 		flattened = content.map(d => Token.stringify(d, language)).join('')
-	// 	// 		console.log({trulyFlat: flattened})
-	// 	// 	} 
-	// 	// })
-	// 	console.log({o, line, flattened})
-	// 	let stringified = null
-	// 	console.log({line})
-	// 	if (Array.isArray(line)){
-	// 		stringified = line.map(element => Token.stringify(element, language)).join('')
-	// 	}
-	// 	else stringified = line
-	// 	// const stringified = line.map(function(element) {
-	// 	// 	return Token.stringify(element, language);
-	// 	// }).join('');
-	// 	const htmlWrapper = '<' + wrapper.tag + ' class="' + wrapper.classes.join(' ') + '"' + (attributes ? ' ' + attributes : '') + '>' + stringified + '</' + wrapper.tag + '>';
-	// 	console.log({stringified, htmlWrapper})
-	// 	return htmlWrapper
-	// })
 
 }
 
 Token.stringify = function(o, language) {
-	console.log({o})
 	if (o){
 
 		var env = {
@@ -577,7 +543,6 @@ Token.stringify = function(o, language) {
 				env.classes.push('wrapper')
 				return o.map(function(element) {
 					const cont = element.content ? element.content : element
-					console.log({cont})
 					return Token.stringify(cont, language);
 				}).join('');
 			}
