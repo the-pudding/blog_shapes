@@ -1,11 +1,18 @@
 <section class='steps'>
+    <div class='steps-example'>
+        <figure class='pocket'>
+            <svg class='pocket__svg'></svg>
+        </figure>
+        <pre data-src='assets/prism/pocket.js'></pre>
+
+    </div>
     <div class='scroll-text scroll-text-intro'>
         {{#each doc.pocket-steps}}
         <div class='step' data-step='{{{i}}}' id='step-{{{i}}}'>
             <div class='step-text-container'>
-            <p class='step-prose'>{{{text}}}</p>
+                <p class='step-prose'>{{{text}}}</p>
             </div>
         </div>
         {{/each}}
     </div>
-  </section>
+</section>

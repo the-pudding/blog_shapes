@@ -8,13 +8,7 @@ pre
     width 90%
     code
         set-type-size(small) !important
-.test 
-    svg 
-        background-image url(assets/images/pocket.JPG)
-        background-size contain
-        background-repeat no-repeat
-        height 500px
-        width 340px
+
 
 .wrapper 
     height 20px
@@ -37,7 +31,32 @@ pre
     &[data-collapsed='true']
         &::after 
             content ' ...'
-            color #f92672
+            color #cc6666
+
+code 
+    font-family $mono
+    background $code-bg
+    color $code-text
+    padding 0.25rem 0.5rem
+    border-radius 0.3em
+    set-type-size('root')
+
+.steps 
+    display flex
+    flex-direction row-reverse
+    position relative
+    .steps-example 
+        position sticky
+    pre
+        height 45vh
+        overflow-x hidden
+    .pocket
+        svg 
+            background-image url(assets/images/pocket.JPG)
+            background-size contain
+            background-repeat no-repeat
+            height 35vh
+            width 340px
 
 
 
