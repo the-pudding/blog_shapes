@@ -1,15 +1,18 @@
 import scrollama from 'scrollama';
 import 'intersection-observer';
+import fold from './code-folding';
 
 const scroller = scrollama();
 
 const $section = d3.select('.steps');
 const $svg = $section.select('.pocket svg');
 const $steps = $section.selectAll('.step');
+const allJS = d3.select('pre .language-javascript');
 
 const context = d3.path();
 const height = 300;
-const padding = 100;
+const paddingLeft = 100;
+const paddingTop = 35;
 const scale = d3
   .scaleLinear()
   .domain([0, 29])
@@ -33,7 +36,28 @@ function handleResize() {
 }
 
 function handleStepEnter(response) {
-  console.log({ index: response.index });
+  const { index } = response;
+
+  if (index === 0) {
+    $svg.style('background-image', `none`);
+    $svg
+      .selectAll('.path__pocket-bg')
+      .transition()
+      .duration(300)
+      .attr('transform', `translate(0, 0)`);
+    fold.hide(47, 48);
+    fold.highlight(0, 0);
+  }
+  if (index === 1) {
+    $svg.style('background-image', `url(assets/images/pocket.JPG)`);
+    $svg
+      .selectAll('.path__pocket-bg')
+      .transition()
+      .duration(300)
+      .attr('transform', `translate(${paddingLeft}, ${paddingTop})`);
+
+    fold.highlight(47, 48);
+  }
 }
 
 function setupScroll() {
@@ -90,9 +114,11 @@ function resize() {
 }
 
 function init() {
-  setup();
-  setupScroll();
-  resize();
+  return new Promise((resolve, reject) => {
+    setup();
+    setupScroll();
+    resize();
+  });
 }
 
 export default { init, resize };

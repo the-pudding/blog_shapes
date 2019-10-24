@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
 import graphic from './graphic';
 import footer from './footer';
-import fold from './code-folding'
+import fold from './code-folding';
 
 const $body = d3.select('body');
 let previousWidth = 0;
@@ -39,9 +39,9 @@ function init() {
   // setup sticky header menu
   setupStickyHeader();
   // kick off graphic code
-  graphic.init();
-  // initialize code folding 
-  fold();
+  // graphic.init();
+  // initialize code folding
+  fold.init().then(graphic.init());
   // load footer stories
   footer.init();
 }

@@ -14,6 +14,10 @@ pre
     height 20px
     opacity 1
     transition 100ms ease-in-out
+    &.is-highlighted 
+        background-color lighten($code-bg, 20)
+        .lineNumber 
+            color $gray
     &.is-hidden 
         height 0px
         opacity 0
@@ -69,6 +73,13 @@ code
         position relative
         padding 0 1rem
         max-width 20rem
+        .step-prose 
+            svg 
+                width 20px
+                height 20px
+                display inline-block
+                fill $off-black
+
 
 
 
