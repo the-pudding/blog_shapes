@@ -7,6 +7,7 @@ const scrollJS = null;
 
 const innards = [];
 let full = [];
+const lineHeight = 20;
 
 console.log({ allJS, loaded });
 
@@ -19,7 +20,25 @@ function checkLoad() {
   }, 1000);
 }
 
+function expandFunction(startRow, endRow) {
+  const stepCodeRows = d3.selectAll('.steps-example pre .line');
+  const between = d3.range(startRow, endRow);
+
+  stepCodeRows.classed('is-hidden', false);
+
+  between.forEach(num => {
+    const expanded = stepCodeRows.filter((d, i, n) => {
+      return d3.select(n[i]).attr('data-row') === num.toString();
+    });
+    const condition = expanded[0].attr('data-collapsed');
+    console.log({ condition });
+    expanded.classed('is-hidden', condition);
+    expanded[0].attr('data-collapsed', !condition);
+  });
+}
+
 function highlight(startRow, endRow) {
+  console.log({ full });
   const stepCodeRows = d3.selectAll('.steps-example pre .line');
   const between = d3.range(startRow, endRow);
 
@@ -29,6 +48,10 @@ function highlight(startRow, endRow) {
     const highlighted = stepCodeRows.filter((d, i, n) => {
       return d3.select(n[i]).attr('data-row') === num.toString();
     });
+
+    // scroll to highlighted position
+    const parent = d3.select('.steps-example pre');
+    parent.node().scrollTop = startRow * lineHeight;
 
     highlighted.classed('is-highlighted', true);
     highlighted.classed('is-hidden', false);
@@ -145,4 +168,4 @@ function init() {
   });
 }
 
-export default { init, allCollapse, highlight, hide };
+export default { init, allCollapse, highlight, hide, expandFunction };

@@ -47,6 +47,7 @@ function handleStepEnter(response) {
       .attr('transform', `translate(0, 0)`);
     fold.hide(47, 48);
     fold.highlight(0, 0);
+    fold.expandFunction(33, 46);
   }
   if (index === 1) {
     $svg.style('background-image', `url(assets/images/pocket.JPG)`);
