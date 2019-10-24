@@ -1,5 +1,11 @@
-const $section = d3.select('.pocket');
-const $svg = $section.select('svg');
+import scrollama from 'scrollama';
+import 'intersection-observer';
+
+const scroller = scrollama();
+
+const $section = d3.select('.steps');
+const $svg = $section.select('.pocket svg');
+const $steps = $section.selectAll('.step');
 
 const context = d3.path();
 const height = 300;
@@ -17,27 +23,50 @@ const testData = {
   minWidth: 13,
 };
 
+function handleResize() {
+  // 1. update height of step elements
+  const stepH = Math.floor(window.innerHeight * 0.75);
+
+  $steps.style('height', `${stepH}px`);
+
+  scroller.resize();
+}
+
+function handleStepEnter(response) {
+  console.log({ index: response.index });
+}
+
+function setupScroll() {
+  scroller
+    .setup({
+      step: '.scroll-text-intro .step',
+      offset: 0.7,
+      debug: true,
+    })
+    .onStepEnter(handleStepEnter);
+}
+
 function drawShape(d) {
   context.moveTo(0, 0);
-  // straight line down to max height
-  context.lineTo(0, scale(d.maxHeight));
-  // eventual curve
-  // context.lineTo(scale(d.maxWidth), scale(d.minHeight));
-  context.quadraticCurveTo(
-    scale(d.maxWidth / 2),
-    scale(d.maxHeight + 2),
-    scale(d.maxWidth),
-    scale(d.minHeight)
-  );
-  // straight line up
-  context.lineTo(scale(d.maxWidth), scale(d.minHeight - d.rivetHeight));
-  context.quadraticCurveTo(
-    scale((d.maxWidth - d.minWidth) * 1.5),
-    scale(d.rivetHeight),
-    scale(d.maxWidth - d.minWidth),
-    0
-  );
-  context.closePath();
+  // // straight line down to max height
+  // context.lineTo(0, scale(d.maxHeight));
+  // // eventual curve
+  // // context.lineTo(scale(d.maxWidth), scale(d.minHeight));
+  // context.quadraticCurveTo(
+  //   scale(d.maxWidth / 2),
+  //   scale(d.maxHeight + 2),
+  //   scale(d.maxWidth),
+  //   scale(d.minHeight)
+  // );
+  // // straight line up
+  // context.lineTo(scale(d.maxWidth), scale(d.minHeight - d.rivetHeight));
+  // context.quadraticCurveTo(
+  //   scale((d.maxWidth - d.minWidth) * 1.5),
+  //   scale(d.rivetHeight),
+  //   scale(d.maxWidth - d.minWidth),
+  //   0
+  // );
+  // context.closePath();
 
   return context.toString();
 }
@@ -51,14 +80,19 @@ function setup() {
         .append('path')
         .attr('class', 'path__pocket path__pocket-bg')
         .attr('d', drawShape)
-        .attr('transform', `translate(${padding}, 0)`)
+        // .attr('transform', `translate(${padding}, 0)`)
+        .attr('marker-end', 'url(#pencil)')
     );
 }
 
-function resize() {}
+function resize() {
+  handleResize();
+}
 
 function init() {
   setup();
+  setupScroll();
+  resize();
 }
 
 export default { init, resize };

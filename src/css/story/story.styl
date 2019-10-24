@@ -45,18 +45,30 @@ code
     display flex
     flex-direction row-reverse
     position relative
+    width 60rem 
+    margin 0 auto
     .steps-example 
         position sticky
-    pre
-        height 45vh
-        overflow-x hidden
-    .pocket
-        svg 
-            background-image url(assets/images/pocket.JPG)
-            background-size contain
-            background-repeat no-repeat
-            height 35vh
-            width 340px
+        top 100px
+        height 90vh
+        display flex 
+        flex-direction column 
+        align-items center
+        pre
+            height 45vh
+            overflow-x hidden
+        .pocket
+            svg 
+                //background-image url(assets/images/pocket.JPG)
+                background-size contain
+                background-repeat no-repeat
+                height 35vh
+                width 340px
+                border 1px solid $off-black
+    .scroll-text
+        position relative
+        padding 0 1rem
+        max-width 20rem
 
 
 
