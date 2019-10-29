@@ -63,12 +63,20 @@ code
             overflow-x hidden
         .pocket
             svg 
-                //background-image url(assets/images/pocket.JPG)
+                background-image none
                 background-size contain
                 background-repeat no-repeat
-                height 35vh
-                width 340px
+                height 350px
+                width 400px
                 border 1px solid $off-black
+                transition background-image 300ms ease-in-out
+                &.pocket-bg
+                    background-image url(assets/images/pocket.JPG)
+                    transition 300ms ease-in-out
+                .path__pocket
+                    stroke red
+                    stroke-width 2px
+                    fill none
     .scroll-text
         position relative
         padding 0 1rem

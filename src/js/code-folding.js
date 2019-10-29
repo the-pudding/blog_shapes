@@ -26,14 +26,18 @@ function expandFunction(startRow, endRow) {
 
   stepCodeRows.classed('is-hidden', false);
 
-  between.forEach(num => {
+  const allSel = between.forEach(num => {
     const expanded = stepCodeRows.filter((d, i, n) => {
+      const sel = d3.select(n[i]).attr('data-row') === num.toString();
+      console.log({ num, sel });
       return d3.select(n[i]).attr('data-row') === num.toString();
     });
-    const condition = expanded[0].attr('data-collapsed');
+    console.log({ allSel });
+
+    const condition = expanded.attr('data-collapsed') === 'true';
     console.log({ condition });
     expanded.classed('is-hidden', condition);
-    expanded[0].attr('data-collapsed', !condition);
+    expanded.attr('data-collapsed', !condition);
   });
 }
 

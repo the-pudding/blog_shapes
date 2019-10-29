@@ -11,19 +11,18 @@ const allJS = d3.select('pre .language-javascript');
 
 const context = d3.path();
 const height = 300;
-const paddingLeft = 100;
-const paddingTop = 35;
+const paddingLeft = 130;
+const paddingTop = 48;
 const scale = d3
   .scaleLinear()
-  .domain([0, 29])
+  .domain([0, 18.4])
   .range([0, height]);
 
 const testData = {
-  maxHeight: 14.5,
-  minHeight: 14,
-  rivetHeight: 6.5,
-  maxWidth: 16.5,
-  minWidth: 13,
+  maxHeight: 15.5,
+  minHeight: 7.5,
+  maxWidth: 14,
+  minWidth: 11,
 };
 
 function handleResize() {
@@ -37,20 +36,25 @@ function handleResize() {
 
 function handleStepEnter(response) {
   const { index } = response;
+  console.log(index);
 
   if (index === 0) {
-    $svg.style('background-image', `none`);
+    $svg.classed('pocket-bg', false);
     $svg
       .selectAll('.path__pocket-bg')
       .transition()
       .duration(300)
       .attr('transform', `translate(0, 0)`);
-    fold.hide(47, 48);
+
     fold.highlight(0, 0);
-    fold.expandFunction(33, 46);
+    fold.expandFunction(32, 46);
+    fold.hide(47, 48);
   }
   if (index === 1) {
-    $svg.style('background-image', `url(assets/images/pocket.JPG)`);
+    $svg.classed('pocket-bg', true);
+  }
+  if (index === 2) {
+    $svg.classed('pocket-bg', true);
     $svg
       .selectAll('.path__pocket-bg')
       .transition()
@@ -58,6 +62,10 @@ function handleStepEnter(response) {
       .attr('transform', `translate(${paddingLeft}, ${paddingTop})`);
 
     fold.highlight(47, 48);
+  }
+  if (index === 3) {
+    $svg.classed('pocket-bg', true);
+    $svg.selectAll('.path__pocket').attr('d', d => drawShape(d, index));
   }
 }
 
@@ -71,8 +79,19 @@ function setupScroll() {
     .onStepEnter(handleStepEnter);
 }
 
-function drawShape(d) {
+function drawShape(d, step) {
   context.moveTo(0, 0);
+
+  if (step === 3) {
+    // straight line down to max height
+    context.lineTo(0, scale(d.maxHeight));
+  }
+  if (step === 4) {
+    // straight line down to max height
+    context.lineTo(0, scale(d.maxHeight));
+    // eventual curve
+    context.lineTo(scale(d.maxWidth), scale(d.minHeight));
+  }
   // // straight line down to max height
   // context.lineTo(0, scale(d.maxHeight));
   // // eventual curve
